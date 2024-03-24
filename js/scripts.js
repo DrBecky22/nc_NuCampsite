@@ -20,16 +20,46 @@ carouselPlay.addEventListener('click', function() {
 })
 
 async function fetchWeather() {
-    const apiKey = process.env.OPEN_WEATHER_API_KEY;
+    const apiKey = '19d863989ef8c8e648f7e3077302a835';
+    console.log(apiKey);
     let city = "Aspen";
     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+    
+   
+   
     try {
-        let response = await fetch(url);
-        let data = await response.json();
+        const response = await fetch(url);
+        const data = await response.json();
         console.log(data);
+        displayWeather(data);  
     } catch (error) {
         console.error('there was an error', error);
     }
 }
 
-fetchWeather();
+
+fetchWeather();  
+
+function displayWeather(data) {
+   
+    let icon = document.querySelector('#weather-icon');
+    let temp = document.querySelector('#weather-temp');
+    let description = document.querySelector('#weather-description');
+
+    let iconSrc = data.weather[0].icon;
+    let tempSrc = data.main.temp;
+    let descriptionSrc = data.weather[0].description
+
+    // console.log(iconSrc);
+    // console.log(tempSrc);
+    // console.log(descriptionSrc);
+
+    let iconImg = document.createElement('img');
+    iconImg.src = `https://openweathermap.org/img/w/${iconSrc}.png`;
+    icon.appendChild(iconImg);
+
+    temp.textContent = Math.floor(tempSrc) + "\u00B0" + "F";
+
+    description.innerHTML = descriptionSrc;
+
+}
